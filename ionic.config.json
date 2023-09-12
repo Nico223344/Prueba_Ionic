@@ -1,0 +1,7 @@
+{
+  "name": "MyMoni",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

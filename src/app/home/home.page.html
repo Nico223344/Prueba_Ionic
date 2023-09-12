@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title>Inicio</ion-title>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="nombreUsuario">
+        <ion-icon name="person-circle"></ion-icon>
+        {{ nombreUsuario }}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <div class="container">
+    <ion-img src="https://w7.pngwing.com/pngs/391/829/png-transparent-diwan-bookstore-logo-publishing-book-angle-text-reading.png"></ion-img>
+    <ion-title class="titulo"> Registro de asistencia. </ion-title>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" style="margin-bottom: 50px;">
+    <ion-fab-button color="secondary" [routerLink]="['/login']">
+      <ion-icon  name="chevron-back"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-button expand="full" (click)="redirigirAVistaQR()">Ir a vista QR</ion-button>
+</ion-content>
+
+
+<ion-footer>
+  <ion-toolbar  color="secondary">
+  Desarrollado Por Nicolas Cares
+  </ion-toolbar>
+</ion-footer>
+
+
+

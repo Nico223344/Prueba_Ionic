@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Inicio Sesion</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="header">
+    <h1 class="titulo">Bienvenido</h1>
+    <p class="subtitulo">Inicia sesión para validar tu asistencia</p>
+  </div>
+
+  <form [formGroup]="formularioLogin">
+    <div class="ion-padding" >
+      <ion-item>
+        <ion-input formControlName="Usuario"></ion-input>
+        <ion-icon name="person-outline"> </ion-icon>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="password" type="password"></ion-input>
+        <ion-icon name="lock-closed-outline"> </ion-icon>
+      </ion-item>
+      <div class="recuperarLink">
+        <a [routerLink]="['/reset-password']" color="secondary"> Recuperar contraseña.</a>
+      </div>
+    </div>
+  </form>
+  <ion-fab vertical="bottom"  horizontal="end" style="margin-bottom: 50px;">
+    <ion-fab-button color="secondary" (click)="ingresar()">
+      <ion-icon name="chevron-forward"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>
+
+
+<ion-footer>
+  <ion-toolbar  color="secondary">
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/registro']">Necesitas una cuenta? Registrate</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
+

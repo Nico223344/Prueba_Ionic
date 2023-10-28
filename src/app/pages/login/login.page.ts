@@ -1,12 +1,9 @@
-import { Component, OnInit, ElementRef, ViewChild} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-  FormBuilder
-} from '@angular/forms';
-import { AlertController, AnimationController, IonCard, IonCardContent } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
+import { Storage } from '@ionic/storage-angular';
+import { AuthService } from 'src/app/servicios/auth.service';
+
 
 
 @Component({
@@ -16,52 +13,50 @@ import { AlertController, AnimationController, IonCard, IonCardContent } from '@
 })
 export class LoginPage implements OnInit {
 
-  //@ViewChild("cardElement", { static: true }) cardElement: ElementRef;
+  constructor(private alertController: AlertController, 
+    private router: Router, 
+    public storage: Storage, 
+    private authService: AuthService) { }
 
-  formularioLogin: FormGroup;
-
-
-  constructor(public fb: FormBuilder,
-    public alertController: AlertController,private router: Router, private animationCtrl: AnimationController) { 
-
-    this.formularioLogin = this.fb.group({
-      'Usuario': new FormControl("", Validators.required),
-      'password': new FormControl("", Validators.required)
-    });
-
-  }
-
-  ngOnInit() {
+  user: string = ""
+  pass: string = "";
+  
+  async ngOnInit() {
+    await this.storage.create
   }
   //Logica que valida los datos registardos en el page de "registro" y te dirigue al home cuanto estas son validadas
-  async ingresar() {
-    if (this.formularioLogin.valid) {
-      const usuarioString = localStorage.getItem('usuario');
-      const f = this.formularioLogin.value;
-
-      if (usuarioString) {
-        const usuario = JSON.parse(usuarioString);
-        if (usuario.Usuario === f.Usuario && usuario.password === f.password) {
-          // Inicio de sesión exitoso, redirige a la página de inicio (home)
-          this.router.navigate(['/home']);
+  inicioSesion() {
+    this.authService.login(this.user, this.pass).then(loginExitoso => {
+      if (this.user.length > 0 && this.pass.length > 0) {
+        if(loginExitoso){
+          this.router.navigateByUrl('scan');
         } else {
-          this.mostrarAlerta('Datos incorrectos', 'Los datos que ingresaste son incorrectos.');
+          this.alertFunc('Error', 'El Usuario y/o la Contraseña ingresados son incorrectos');
+        }
+      }else{
+        this.alertFunc('Ingrese Usuario y/o Contraseña', 'Porfavor ingrese los datos correspondientes');
+      }
+    })
+
+    this.storage.get('usuario').then(userGuardado => {
+      if (this.user.length > 0 && this.pass.length > 0) {
+        if (this.user === userGuardado.user && this.pass === userGuardado.pass) {
+          this.router.navigateByUrl('scan');
+        } else {
+          this.alertFunc('Error', 'El Usuario y/o la Contraseña ingresados son incorrectos');
         }
       } else {
-        this.mostrarAlerta('Usuario no registrado', 'No existe un usuario registrado.');
-      }
-    } else {
-      this.mostrarAlerta('Campos incompletos', 'Por favor, complete todos los campos.');
-    }
+        this.alertFunc('Ingrese Usuario y/o Contraseña', 'Porfavor ingrese los datos correspondientes');
+      };
+    });
   }
 
-  async mostrarAlerta(header: string, message: string) {
+  async alertFunc(headerMsg:string, bodyMsg: string) {
     const alert = await this.alertController.create({
-      header: header,
-      message: message,
-      buttons: ['Aceptar']
+      header: headerMsg,
+      message: bodyMsg,
+      buttons: ['OK'],
     });
-
     await alert.present();
   }
   

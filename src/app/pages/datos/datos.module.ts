@@ -4,18 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ScanPageRoutingModule } from './scan-routing.module';
+import { DatosPageRoutingModule } from './datos-routing.module';
 
-import { ScanPage } from './scan.page';
-import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { DatosPage } from './datos.page';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ScanPageRoutingModule,
-    ZXingScannerModule,
+    DatosPageRoutingModule
   ],
-  declarations: [ScanPage]
+  declarations: [DatosPage]
 })
-export class ScanPageModule {}
+export class DatosPageModule {}

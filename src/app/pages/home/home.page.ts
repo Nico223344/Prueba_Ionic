@@ -29,7 +29,7 @@ export class HomePage {
 
   /*mostrarDatos() {
     this.mostrarDatosIngresados = true;
-  }*/
+  }
   ionViewWillEnter() {
     const usuarioString = localStorage.getItem('usuario');
     const usuario = usuarioString ? JSON.parse(usuarioString) : null;
@@ -40,4 +40,5 @@ export class HomePage {
   redirigirAVistaQR() {
     this.router.navigate(['/scan']);
   }
+  }*/
 }

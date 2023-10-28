@@ -1,20 +1,29 @@
 <ion-header [translucent]="true">
-  <ion-toolbar color="secondary">
-    <ion-title >Scan</ion-title>
+  <ion-toolbar>
+    <ion-title class="ion-text-center">QR</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-list>
-    <ion-item *ngFor="let barcode of barcodes">
-      <ion-label position="stacked">{{ barcode.format }}</ion-label>
-      <ion-input type="text" [value]="barcode.rawValue"></ion-input>
-    </ion-item>
-  </ion-list>
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button (click)="scan()" [disabled]="!isSupported">
-      <ion-icon name="scan"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-</ion-content>
+<ion-content [fullscreen]="true">
+  <img id="backgroundImage" src="../../assets/imagenes/Sprinkle (2).svg" alt="">
+  <ion-row id="row" class="ion-justify-content-center">
+    <ion-col size="9" class="ion-align-items-center">
+      <ion-row id="row" class="ion-justify-content-center">
+        <h1 class="ion-text-center">Escanea el codigo QR para obtener los datos de la clase</h1>        
+      </ion-row>
+      <ion-row id="row" class="ion-justify-content-center">
+        <zxing-scanner id="scanner" name="scanner" #scannerEnabled [formats]="allowedFormats" (scanSuccess)="readFunc($event, 'success')"></zxing-scanner>
+      </ion-row>
+      <ion-row id="row" class="ion-justify-content-center">
+        <h2 class="ion-text-center">Seras redireccionado automaticamente a los datos de la clase</h2>        
+      </ion-row>
+      <ion-row id="row1" class="ion-justify-content-center">
+        <ion-button routerLink="/login" color="danger" fill="solid" expand="block" shape="round">Salir</ion-button>    
+      </ion-row>
+    </ion-col>    
+  </ion-row>
 
+
+
+
+</ion-content>

@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-reset-password',
@@ -6,27 +9,40 @@ import { Component } from '@angular/core';
   styleUrls: ['reset-password.page.scss'],
 })
 export class ResetPasswordPage {
-  usuario: any;
-  nombreUsuarioBuscado: string = '';
 
-  constructor() {}
+  constructor(private alertController: AlertController, private router: Router, public storage: Storage) { }
+  user: string = "";
+  newpass: string = "";
 
   ngOnInit() {
-    const usuarioString = localStorage.getItem('usuario');
-    this.usuario = usuarioString ? JSON.parse(usuarioString) : null;
+    
   }
 
-  buscarUsuario() {
-    const nombreUsuario = this.nombreUsuarioBuscado;
-
-    this.usuario = this.buscarUsuarioPorNombre(nombreUsuario);
+  reestablecerPass() {
+    if (this.user.length > 0 && this.newpass.length > 0) {
+      this.storage.get('usuario').then(userGuardado => {
+        if (userGuardado.user === this.user) {
+          userGuardado.pass = this.newpass;
+          this.storage.set('usuario', userGuardado).then(() => {
+            this.alertFunc('Éxito', 'La contraseña ha sido reestablecida correctamente');
+            this.router.navigateByUrl('login');
+          });
+        } else {
+          this.alertFunc('Error', 'El usuario ingresado no existe');
+        }
+      });
+    } else {
+      this.alertFunc('Error', 'Ingrese Usuario y/o Contraseña');
+    }
   }
 
-  buscarUsuarioPorNombre(nombreUsuario: string): any {
-    const usuariosString = localStorage.getItem('usuarios');
-    const usuarios = usuariosString ? JSON.parse(usuariosString) : [];
-
-    return usuarios.find((user: any) => user.Usuario === nombreUsuario);
+  async alertFunc(headerMsg:string, bodyMsg: string) {
+    const alert = await this.alertController.create({
+      header: headerMsg,
+      message: bodyMsg,
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
+
 }
-

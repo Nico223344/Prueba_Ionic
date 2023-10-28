@@ -1,72 +1,108 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-  FormBuilder
-} from '@angular/forms';
 import { AlertController } from '@ionic/angular';
-import { ToastController } from '@ionic/angular';
-
+import { Storage } from '@ionic/storage-angular';
+import { ApisService } from 'src/app/servicios/apis.service';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.page.html',
   styleUrls: ['./registro.page.scss'],
 })
-
 export class RegistroPage implements OnInit {
 
-  formularioRegistro: FormGroup;
+  constructor(private alertController: AlertController, private router: Router, public storage: Storage, public apis: ApisService) { }
 
-  constructor(public fb: FormBuilder,
-    public alertController: AlertController, private router: Router,  private toastController: ToastController) {
-    this.formularioRegistro = this.fb.group({
-      'nombre': new FormControl("", [Validators.required, Validators.minLength(4), Validators.maxLength(16)]),
-      'Usuario': new FormControl("", [Validators.required, Validators.minLength(4), Validators.maxLength(8)]),
-      'password': new FormControl("",[Validators.required, Validators.minLength(4), Validators.maxLength(4)]),
-    });
+  async ngOnInit() {
+    await this.storage.create();
+    this.listaRegion();
+    this.listaComuna();
   }
-
-  ngOnInit() {
-  }
-  //mensaje de exito
-  async mostrarMensajeRegistroExitoso() {
-    const toast = await this.toastController.create({
-      message: '¡Registro exitoso!',
-      duration: 2000, 
-      position: 'bottom', 
-      color: 'success' 
-    });
   
-    await toast.present();
+  listadoRegiones: any = [];
+  listadoComunas: any = [];
+
+  usuario={
+    nombre: "",
+    apellido: "",
+    rut: "",
+    carrera: "",
+    region: "",
+    comuna: "",
+    user: "",
+    pass: "",
+    foto: "",
   }
-  //guardar los datos del formulario 
-  async guardar(){
-    var f = this.formularioRegistro.value;
 
-    if(this.formularioRegistro.invalid){
-      const alert = await this.alertController.create({
-        header: 'Datos incompletos',
-        message: 'Tienes que llenar todos los campos, y asegurarte de que el usuario no supere los 8 digitos y el contraseña los 4 digitos',
-        buttons: ['Aceptar']
-      });
-  
-      await alert.present();
-      return;
-    }
-    var f = this.formularioRegistro.value;
-    var usuario = {
-      nombre:f.nombre,
-      Usuario: f.Usuario,
-      password: f.password
-    }
+  currentStep = 1;
 
-    localStorage.setItem('usuario',JSON.stringify(usuario));
-    this.mostrarMensajeRegistroExitoso();
-    this.router.navigate(['/login']);
+  public alertButtons = ['OK'];
+
+  previousStep() {
+    this.currentStep--;
+  }
+
+  nextStep() {
+    this.currentStep++;
+  }
+
+  registrarUsuario(){
+    if (this.usuario.nombre.length > 0 && this.usuario.apellido.length > 0 && this.usuario.rut.length > 0 && this.usuario.carrera.length > 0 && this.usuario.region.length > 0 && this.usuario.comuna.length > 0 && this.usuario.user.length > 0 && this.usuario.pass.length > 0) {
     
+      this.storage.set('usuario', this.usuario);
+      console.log('Usuario guardado', this.usuario)
+    
+      this.alertFunc('Éxito', 'El usuario ha sido registrado correctamente')
+      this.router.navigateByUrl('login');    
+    } else {
+      this.alertFunc('Datos Inválidos', 'Ingrese los datos correctamente')
+    }
+  }
+
+  listaRegion() {
+    this.apis.obtenerListadoRegiones().then((respuesta) => {
+        this.listadoRegiones = respuesta.data;
+        console.log(respuesta, this.listadoRegiones)
+    });
+  }
+
+  listaComuna() {
+    this.apis.obtenerListadoComunas().then((respuesta) => {
+      this.listadoComunas = respuesta.data;
+      console.log(respuesta, this.listadoComunas)
+    })
+  }
+
+  async tomarSelfie() {
+    
+    const selfie = await Camera.getPhoto({
+      quality:90,
+      allowEditing:false,
+      resultType:CameraResultType.Base64,
+      source:CameraSource.Camera //Photo o prompt
+      
+    });
+
+    if(selfie) {
+      if(selfie.base64String) {  
+        this.usuario.foto = 'data:image/jpeg;base64,' + selfie.base64String;
+      } else {
+        this.alertFunc('Error', 'No se pudo obtener la imagen.')
+      }
+    } else {
+      this.alertFunc('Error', 'No se pudo tomar la imagen')
+    }
+
+  }
+
+  async alertFunc(headerMsg:string, bodyMsg: string) {
+    const alert = await this.alertController.create({
+      header: headerMsg,
+      message: bodyMsg,
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 
 }

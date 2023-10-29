@@ -8,12 +8,12 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <img id="backgroundImage" src="../../assets/imagenes/Sprinkle (2).svg" alt="">
+  <img id="backgroundImage" src="assets/imagen/imagen 2.jpg" alt="">
   <ion-row id="row" class="ion-justify-content-center">
     <ion-col size="9" class="ion-align-items-center">
     
       <ion-row id="row1" class="ion-justify-content-center">
-        <ion-img src="../../../assets/imagenes/duoc.png"></ion-img>
+        <ion-img src="assets/imagen/imagen 3.png"></ion-img>
       </ion-row>
     
       <form (ngSubmit)="registrarUsuario()">   
@@ -64,19 +64,18 @@
           </ion-row>
 
           <ion-row id="row7" class="ion-justify-content-center">
-            <ion-button (click)="tomarSelfie()" expand="block">Tomar Selfie</ion-button>
+            <ion-button (click)="tomarSelfie()" expand="block" color="secondary">Tomar Selfie</ion-button>
             <ion-img [src]="usuario.foto" *ngIf="usuario.foto"></ion-img>
           </ion-row>
-        
         </div>
         
         <ion-row id="row8" class="ion-justify-content-between">
           <ion-col size="auto">
-            <ion-button (click)="previousStep()" fill="solid" expand="block" shape="round" *ngIf="currentStep > 1">Anterior</ion-button>
+            <ion-button (click)="previousStep()" fill="solid" expand="block" shape="round" *ngIf="currentStep > 1" color="secondary">Anterior</ion-button>
           </ion-col>
           <ion-col size="auto">
-            <ion-button (click)="nextStep()" fill="solid" expand="block" shape="round" *ngIf="currentStep < 3">Siguiente</ion-button>
-            <ion-button *ngIf="currentStep === 3" fill="solid" shape="round" type="submit">Registrarse</ion-button>
+            <ion-button (click)="nextStep()" fill="solid" expand="block" shape="round" *ngIf="currentStep < 3" color="secondary">Siguiente</ion-button>
+            <ion-button *ngIf="currentStep === 3" fill="solid" shape="round" type="submit" color="secondary">Registrarse</ion-button>
           </ion-col>
         </ion-row>
 

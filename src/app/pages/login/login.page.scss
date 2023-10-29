@@ -75,3 +75,26 @@ ion-item {
         text-decoration: none;
     }
 }
+
+.background-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* asegúrate de que el contenedor de la imagen de fondo esté detrás del contenido */
+  }
+  
+  .background-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* asegúrate de que la imagen cubra todo el espacio disponible */
+  }
+  
+  .content-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* centra verticalmente */
+    align-items: center; /* centra horizontalmente */
+    height: 100%; /* ocupa todo el espacio disponible */
+  }

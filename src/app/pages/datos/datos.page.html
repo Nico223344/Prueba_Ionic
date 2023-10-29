@@ -1,11 +1,14 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title class="ion-text-center">Datos de la clase</ion-title>
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Datos de clase</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <img id="backgroundImage" src="../../assets/imagenes/Sprinkle (2).svg" alt="">
+  <img id="backgroundImage" src="assets/imagen/imagen 2.jpg" alt="">
   <ion-row id="row" class="ion-justify-content-center">
     <ion-col size="9" class="ion-align-items-center">
       <h1 class="ion-text-center">¡La clase ha sido registrada con éxito!</h1>      
@@ -28,6 +31,11 @@
       </ion-row>  
     </ion-col>
   </ion-row>
-
-
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar  color="secondary">
+  Desarrollado Por Nicolas Cares
+  </ion-toolbar>
+</ion-footer>
+
